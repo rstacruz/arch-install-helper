@@ -1,6 +1,8 @@
 # Arch installer script
 
-A small script to make it easier to install Arch Linux on VM's.
+A small script to make it easier to install Arch Linux primarily aimed at installing Arch on VM's (VMWare Player, VirtualBox).
+
+## Usage
 
 Boot the Arch Linux installer. Get online. (for VM's - you're probably already online.)
 

@@ -14,17 +14,17 @@ export ROOT_PASSWORD="123456"
 export LOCALES="en_US.UTF-8 UTF-8" # and "en_US ISO-8859-1"
 export LANG="en_US.UTF-8"
 
-# Packages to install
+# Packages to install (base)
 export PACKAGES="base linux linux-firmware"
-
-# Other packages to install
 PACKAGES+=" base-devel"
-PACKAGES+=" vim git sudo openssh" # dev tools
+
+# Packages to install (optionals)
+PACKAGES+=" git sudo openssh" # dev tools
 PACKAGES+=" xorg" # xorg
-PACKAGES+=" tig neovim tmux"
 PACKAGES+=" firefox" # browser
 PACKAGES+=" xfce4 ttf-inconsolata ttf-dejavu ttf-croscore" # xfce4
 PACKAGES+=" lightdm lightdm-gtk-greeter" # lightdm
+#PACKAGES+=" neovim tig neovim tmux the_silver_searcher" # some common dev tools
 #PACKAGES+=" chromium"
 #PACKAGES+=" fish pkgfile" # fish shell
 #PACKAGES+=" gnome gnome-tweaks gdm" # gnome
@@ -125,6 +125,8 @@ arch-chroot /mnt sh -c "
 #"
 
 # ===== Time synchronization =====
+# Synchronizes the time via NTP.
+# See: https://wiki.archlinux.org/title/Systemd-timesyncd
 #
 #arch-chroot /mnt sh -c "
 #  systemctl enable --now systemd-timesyncd.service
@@ -141,8 +143,7 @@ arch-chroot /mnt sh -c "
 # ===== VMWare tools (open-vm-tools) =====
 #
 #arch-chroot /mnt sh -c "
-#  pacman -S --needed --noconfirm \
-#    xf86-video-vmware open-vm-tools
+#  pacman -S --needed --noconfirm xf86-video-vmware open-vm-tools
 #  systemctl enable vmtoolsd.service
 #  systemctl enable vmware-vmblock-fuse.service
 #"
@@ -150,12 +151,13 @@ arch-chroot /mnt sh -c "
 # ===== VirtualBox tools =====
 #
 #arch-chroot /mnt sh -c "
-#  pacman -S --needed --noconfirm \
-#    linux-headers virtualbox-guest-utils
+#  pacman -S --needed --noconfirm linux-headers virtualbox-guest-utils
 #  sudo systemctl enable vboxservice.service
 #"
 
 # ===== Swap file via systemd-swap =====
+# Automate swap file creation.
+# See: https://wiki.archlinux.org/title/Swap#systemd-swap
 #
 #arch-chroot /mnt sh -c "
 #  pacman -S --noconfirm --needed systemd-swap
@@ -163,22 +165,25 @@ arch-chroot /mnt sh -c "
 #  systemctl enable systemd-swap
 #"
 
-# ===== Swap file =====
+# ===== Disable PC speaker beeps =====
+# See: https://wiki.archlinux.org/title/Kernel_module#Using_files_in_/etc/modprobe.d/_2
 #
-#SWAP_SIZE="8G"
 #arch-chroot /mnt sh -c "
-#  fallocate -l $SWAP_SIZE /swapfile
-#  chmod 600 /swapfile
-#  mkswap /swapfile
-#  echo '/swapfile none swap defaults 0 0' | tee -a /etc/fstab
+#  echo 'blacklist pcspkr' > /etc/modprobe.d/blacklist.conf
 #"
 
-# ===== Alternate keymap =====
-# For those using dvorak or colemak.
+# ===== Autologin to tty1 =====
+# Great for VM's that won't use a display manager.
+# See: https://wiki.archlinux.org/title/Getty#Virtual_console
 #
-#KEYMAP="dvorak"
 #arch-chroot /mnt sh -c "
-#  echo 'KEYMAP=$KEYMAP' > /etc/vconsole.conf
+#  mkdir -p /etc/systemd/system/getty@tty1.service.d
+#  (
+#    echo '[Service]'
+#    echo 'ExecStart='
+#    echo 'ExecStart=-/usr/bin/agetty --autologin $USERNAME --noclear %I \$TERM'
+#  ) | tee /etc/systemd/system/getty@tty1.service.d/override.conf
+#  systemctl enable getty@tty1
 #"
 
 echo ''
