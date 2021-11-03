@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# https://gist.github.com/rstacruz/dd24b2a2be5b36bf77965060ceed2f69
+# https://github.com/rstacruz/arch-install-helper
 
 # Edit these things
 export TIME_ZONE="Australia/Melbourne"

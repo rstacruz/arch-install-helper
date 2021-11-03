@@ -8,7 +8,7 @@ Boot the Arch Linux installer. Get online. (for VM's - you're probably already o
 root@archiso:~$ ping 8.8.8.8
 ```
 
-Set up your partitions and mount things to /mnt.
+Set up your partitions and mount things to `/mnt`.
 
 ```sh
 lsblk
@@ -18,7 +18,8 @@ lsblk
 #   sda    8:0     32G    0  disk
 
 cfdisk /dev/sda
-# ^ partition the disk:
+# ^ Partition the disk. Here's an example that will work
+#   for VM's:
 #   - Set label type: `gpt`
 #   - Add new partition: 1M
 #   - Change type to: BIOS boot
@@ -27,13 +28,15 @@ cfdisk /dev/sda
 #   - "Write" then "Quit"
 
 mkfs.ext4 /dev/sda2
+# ^ Format the partitions
+
 mount /dev/sda2 /mnt
 ```
 
 In the Archiso, Download this file and edit it.
 
 ```sh
-curl -sL https://git.io/JPEr0 -o install.sh
+curl -sL https://git.io/JP9Fj -o install.sh
 vim install.sh
 ```
 
