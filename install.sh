@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
+# --------------------------------------------------------------------------------
+# Arch install helper script
 # https://github.com/rstacruz/arch-install-helper
+#
+# Instructions:
+# - Download this file while booted in Arch ISO. (`curl -sL https://git.io/JP9Fj -o install.sh`)
+# - Edit the values below. (`vim install.sh`)
+# - Set up the disk's partitions and mount everything in /mnt.
+# - Save it and run it.
+# --------------------------------------------------------------------------------
 
 # Edit these things
 export TIME_ZONE="Australia/Melbourne"
@@ -141,6 +150,8 @@ arch-chroot /mnt sh -c "
 #"
 
 # ===== VMWare tools (open-vm-tools) =====
+# Recommended for VMWare guests.
+# See: https://wiki.archlinux.org/title/VMware/Install_Arch_Linux_as_a_guest
 #
 #arch-chroot /mnt sh -c "
 #  pacman -S --needed --noconfirm xf86-video-vmware open-vm-tools
@@ -149,6 +160,7 @@ arch-chroot /mnt sh -c "
 #"
 
 # ===== VirtualBox tools =====
+# Recommended for VirtualBox guests.
 #
 #arch-chroot /mnt sh -c "
 #  pacman -S --needed --noconfirm linux-headers virtualbox-guest-utils
